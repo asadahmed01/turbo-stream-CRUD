@@ -36,7 +36,8 @@ class InboxesController < ApplicationController
         format.turbo_stream do
           render turbo_stream: [
             turbo_stream.update('new_inbox', partial: 'inboxes/form', locals: { inbox: Inbox.new }),
-            turbo_stream.prepend('inboxes', partial: 'inboxes/inbox', locals: { inbox: @inbox })
+            turbo_stream.prepend('inboxes', partial: 'inboxes/inbox', locals: { inbox: @inbox }),
+            turbo_stream.update("count", html: "#{Inbox.count}")
           ]
         end
         format.html { redirect_to inbox_url(@inbox), notice: "Inbox was successfully created." }

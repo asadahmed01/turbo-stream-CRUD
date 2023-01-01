@@ -1,3 +1,6 @@
+<p >
+  Messages: <span id="count"><%= @inboxes.count %></span>
+</p>
 <div id="new_inbox">
   <%= render partial: "inboxes/form", locals: { inbox: Inbox.new } %>
 </div>
