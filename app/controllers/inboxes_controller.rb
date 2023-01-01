@@ -25,9 +25,20 @@ class InboxesController < ApplicationController
 
     respond_to do |format|
       if @inbox.save
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.update('new_inbox', partial: 'inboxes/form', locals: { inbox: Inbox.new }),
+            turbo_stream.prepend('inboxes', partial: 'inboxes/inbox', locals: { inbox: @inbox })
+          ]
+        end
         format.html { redirect_to inbox_url(@inbox), notice: "Inbox was successfully created." }
-        format.json { render :show, status: :created, location: @inbox }
       else
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.update(
+            "new_inbox", partial: "inboxes/form",
+            locals: {inbox: @inbox}
+          )
+        end
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @inbox.errors, status: :unprocessable_entity }
       end

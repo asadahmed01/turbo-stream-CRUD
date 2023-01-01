@@ -1,14 +1,5 @@
-<p style="color: green"><%= notice %></p>
-
-<h1>Inboxes</h1>
-
-<div id="inboxes">
-  <% @inboxes.each do |inbox| %>
-    <%= render inbox %>
-    <p>
-      <%= link_to "Show this inbox", inbox %>
-    </p>
-  <% end %>
+<div id="new_inbox">
+  <%= render partial: "inboxes/form", locals: { inbox: Inbox.new } %>
 </div>
-
-<%= link_to "New inbox", new_inbox_path %>
+<div id="inboxes">
+</div>
