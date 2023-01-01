@@ -17,6 +17,14 @@ class InboxesController < ApplicationController
 
   # GET /inboxes/1/edit
   def edit
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.update(
+        @inbox, partial: "inboxes/form",
+          locals: {inbox: @inbox}
+        )
+      end
+    end
   end
 
   # POST /inboxes or /inboxes.json
@@ -49,9 +57,21 @@ class InboxesController < ApplicationController
   def update
     respond_to do |format|
       if @inbox.update(inbox_params)
+          format.turbo_stream do
+            render turbo_stream: turbo_stream.update(
+              @inbox, partial: "inboxes/inbox",
+              locals: {inbox: @inbox}
+            )
+          end
         format.html { redirect_to inbox_url(@inbox), notice: "Inbox was successfully updated." }
         format.json { render :show, status: :ok, location: @inbox }
       else
+          format.turbo_stream do
+            render turbo_stream: turbo_stream.update(
+              @inbox, partial: "inboxes/form",
+              locals: {inbox: @inbox}
+            )
+          end
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @inbox.errors, status: :unprocessable_entity }
       end
